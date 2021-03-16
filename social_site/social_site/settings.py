@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'accounts',
+    'groups',
+    'posts'
 ]
 
 MIDDLEWARE = [
@@ -122,7 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIR = [os.path.join(BASE_DIR, 'static')]
 
 
 LOGIN_REDIRECT_URL = 'test'

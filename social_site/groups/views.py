@@ -7,9 +7,10 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 
 from .models import Group, GroupMember
+from . import models
 # Create your views here.
 
-class CreateGroup(LoginRequiredMixin, generic.CreateGroup):
+class CreateGroup(LoginRequiredMixin, generic.CreateView):
     fields = ('name', 'description')
     model = Group
 
@@ -22,7 +23,7 @@ class ListGroups(generic.ListView):
 class JoinGroup(LoginRequiredMixin, generic.RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
-        return reverse('groups:single', kwargs={'slug': self.kwargs.get('slug'})
+        return reverse('groups:single', kwargs={'slug': self.kwargs.get('slug')})
 
     def get(self, request, *args, **kwargs):
         group = get_object_or_404(Group, slug=self.kwargs.get('slug'))
@@ -34,13 +35,13 @@ class JoinGroup(LoginRequiredMixin, generic.RedirectView):
         else:
             messages.success(self.request, 'You are now member')
 
-        return super().get(, *args, **kwargs)
+        return super().get(self, request, *args, **kwargs)
 
 
 class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
-        return reverse('groups:single', kwargs={'slug': self.kwargs.get('slug'})
+        return reverse('groups:single', kwargs={'slug': self.kwargs.get('slug')})
 
     def get(self, request, *args, **kwargs):
         try:
@@ -53,4 +54,4 @@ class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
         else:
             membership.delete()
             messages.success(self.request, 'You have successfully leave the group')
-        return super().get(, *args, **kwargs)
+        return super().get(self, request, *args, **kwargs)

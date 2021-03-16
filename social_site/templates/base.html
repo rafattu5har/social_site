@@ -11,6 +11,12 @@
     {% comment %} Google fonts api {% endcomment %}
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'social_site/css/master.css' %}">
+    <style media="screen">
+    #not_underline:hover {
+        text-decoration:none;
+        cursor:pointer;
+    }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light mynav" role='navigation' id='navbar'>
@@ -18,12 +24,12 @@
         <a class="navbar-brand mynav" href="{% url 'home' %}">Social Site</a>
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
-            <li> <a class="nav-link" href="#">Post</a> </li>
-            <li> <a class="nav-link" href="#">Groups</a> </li>
-            <li> <a class="nav-link" href="#">Create Group</a> </li>
+            <li> <a class="nav-link" href="{% url 'posts:create' %}">Post</a> </li>
+            <li> <a class="nav-link" href="{% url 'groups:all' %}">Groups</a> </li>
+            <li> <a class="nav-link" href="{% url 'groups:create' %}">Create Group</a> </li>
             <li> <a class="nav-link" href="{% url 'accounts:logout' %}">Log Out</a> </li>
           {% else %}
-            <li> <a class="nav-link" href="#">Groups</a> </li>
+            <li> <a class="nav-link" href="{% url 'groups:all' %}">Groups</a> </li>
             <li> <a class="nav-link" href="{% url 'accounts:login' %}">Log In</a> </li>
             <li> <a class="nav-link" href="{% url 'accounts:signup' %}">Sign Up</a> </li>
           {% endif %}
