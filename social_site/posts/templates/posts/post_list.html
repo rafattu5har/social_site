@@ -8,11 +8,15 @@
           <div class="content">
             <h5 class="title">Your Groups</h5>
             <ul class="list-unstyle">
-              {% for member_group in user.user_groups.all %}
-                <li class="group li-with-bullet">
-                  <a href="{% url 'groups:single' slug=member_group.group.slug %}">{{ member_group.group }}</a>
-                </li>
-              {% endfor %}
+              {% if user.user_groups.count == 0 %}
+                <p>You are not in any groups</p>
+              {% else %}
+                {% for member_group in user.user_groups.all %}
+                  <li class="group li-with-bullet">
+                    <a href="{% url 'groups:single' slug=member_group.group.slug %}">{{ member_group.group }}</a>
+                  </li>
+                {% endfor %}
+              {% endif %}
             </ul>
           </div>
         </div>
