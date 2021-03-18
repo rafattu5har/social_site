@@ -8,9 +8,9 @@
           <div class="content">
             <h5 class="title">Your Groups</h5>
             <ul class="list-unstyle">
-              {% for member_group in get_user_groups %}
+              {% for member_group in user.user_groups.all %}
                 <li class="group li-with-bullet">
-                  <a href="{% url 'groups:single' slug=member_group.group.slug %}"></a>
+                  <a href="{% url 'groups:single' slug=member_group.group.slug %}">{{ member_group.group }}</a>
                 </li>
               {% endfor %}
             </ul>
@@ -19,7 +19,7 @@
       {% endif %}
       <div class="card card-with-shadow">
         <div class="content">
-          <h5 class="title">All Groups</h5>
+          <h5 class="title"> <a href="{% url 'groups:all' %}">All Groups</a></h5>
           <ul class="list-unstyled">
             {% for other_group in get_other_groups %}
               <li class="group li-with-bullet">
@@ -38,7 +38,43 @@
 
   <div class="col-md-8">
     {% for post in post_list %}
-      {% include "posts/_post.html" %}
+    <div class="list-group-item">
+      <h5 class="media-heading">
+        <span class='username title list-group-item-heading'>
+          <a href="{% url 'posts:for_user' username=post.user.username %}">
+            @<strong>{{ post.user.username }}</strong>
+          </a>
+        </span>
+
+        <time class="time">
+          <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}">
+            {{ post.created_at }}
+          </a>
+          <p>Posted At:
+            <a href="{% url 'groups:single' slug=post.group.slug %}">
+              {{ post.group }}
+            </a>
+          </p>
+        </time>
+      </h5>
+      <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}" id='not_underline'>
+        <h5 class="list-group-item container-fluid">{{ post.message_html|safe|truncatewords:70 }}
+        {% if post.message_html|length != post.message_html|truncatewords:70|length|add:1 %}
+          <strong>See more ...</strong>
+        {% endif %}
+        </h5>
+      </a>
+      <div class="media-body">
+
+
+        <div class="media-footer">
+          {% if user.is_authenticated and post.user == user and not hide %}
+            <a class="btn btn-danger" href="{% url 'posts:delete' pk=post.pk %}" title="delete">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
     {% endfor %}
   </div>
 

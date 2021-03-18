@@ -10,9 +10,14 @@
       <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}">
         {{ post.created_at }}
       </a>
+      <p>Posted At:
+        <a href="{% url 'groups:single' slug=post.group.slug %}">
+          {{ post.group }}
+        </a>
+      </p>
     </time>
   </h5>
-  <h4 class="list-group-item container-fluid">{{ post.message_html|safe }}</h4>
+  <h5 class="list-group-item container-fluid">{{ post.message_html|safe }}</h5>
   <div class="media-body">
 
 
