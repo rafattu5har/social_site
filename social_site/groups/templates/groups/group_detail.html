@@ -5,6 +5,10 @@
     <h1>{{ group.name }}</h1>
     <h2>Member count: {{ group.members.count }}</h2>
   </div>
+  <div class="container list-group-item">
+    <h3>About this group</h3>
+    <p> <strong class="list-group-item">{{ group.description }}</strong></p>
+  </div>
 
 
   <div class="content container">
@@ -28,4 +32,14 @@
      {% endfor %}
     {% endif %}
   </div>
+
+  <div class="container-fluid col-md-4">
+    <h4>Group Members</h4>
+    <div class="jumbotron">
+      {% for member in group.memberships.all %}
+        <p> <a href="{% url 'posts:for_user' username=member %}">@{{ member }}</a> </p>
+      {% endfor %}
+    </div>
+  </div>
+
 {% endblock  %}
