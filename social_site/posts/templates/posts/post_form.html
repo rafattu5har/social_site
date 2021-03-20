@@ -5,7 +5,7 @@
 
   <h4>Create a new post</h4>
   <div class="container">
-    <form id="postform-id" action="{% url 'posts:create' %}" method="post">
+    <form id="postform-id" method="post">
       {% csrf_token %}
       {% bootstrap_form form %}
       <input class="btn btn-primary btn-lg" type="submit" value="Post">
