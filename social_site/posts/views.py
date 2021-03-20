@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
@@ -86,5 +86,19 @@ class EditPost(LoginRequiredMixin, SelectRelatedMixin, generic.UpdateView):
         if obj.user != self.request.user:
             raise Http404
         return super(EditPost, self).dispatch(request, *args, **kwargs)
+
+
+
+class CreateComment(LoginRequiredMixin, generic.CreateView):
+    model = models.Comment
+    fields = ('text', )
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        post_ln = get_object_or_404(models.Post, pk = self.kwargs.get('pk'))
+        self.object.post = post_ln
+        self.object.save()
+        return super().form_valid(form)
 
 # END
