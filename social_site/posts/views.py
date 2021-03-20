@@ -76,6 +76,15 @@ class DeletePost(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
         messages.success(self.request, 'Post Deleted')
         return super().delete(*args, **kwargs)
 
+class EditPost(LoginRequiredMixin, SelectRelatedMixin, generic.UpdateView):
+    model = models.Post
+    select_related = ('user', 'group')
+    fields = ('message',)
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.user != self.request.user:
+            raise Http404
+        return super(EditPost, self).dispatch(request, *args, **kwargs)
 
 # END
