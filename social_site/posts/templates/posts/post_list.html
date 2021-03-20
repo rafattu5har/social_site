@@ -40,7 +40,7 @@
 
 {% block post_content %}
 
-  <div class="col-md-8">
+  <div class="col-md-8 row">
     {% for post in post_list %}
     <div class="list-group-item">
       <h5 class="media-heading">
@@ -71,10 +71,13 @@
       <div class="media-body">
 
 
-        <div class="media-footer">
-          {% if user.is_authenticated and post.user == user and not hide %}
-            <a class="btn btn-danger" href="{% url 'posts:delete' pk=post.pk %}" title="delete">Delete</a>
-            <a class="btn btn-secondary" href="{% url 'posts:edit' pk=post.pk %}" title="edit">Edit Post</a>
+        <div class="media-footer col-md-12">
+          {% if user.is_authenticated and not hide %}
+            {% if post.user == user %}
+              <a class="btn btn-danger" href="{% url 'posts:delete' pk=post.pk %}" title="delete">Delete</a>
+              <a class="btn btn-secondary" href="{% url 'posts:edit' pk=post.pk %}" title="edit">Edit Post</a>
+            {% endif %}
+            <a class="btn btn-primary float-right" href="{% url 'posts:create_comment' pk=post.pk %}">Add Comment</a>
           {% endif %}
         </div>
       </div>
