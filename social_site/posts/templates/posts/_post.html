@@ -1,6 +1,6 @@
 <div class="list-group-item">
   <h5 class="media-heading">
-    <span class='username title list-group-item-heading'>
+    <span class='username title list-group-item'>
       <a href="{% url 'posts:for_user' username=post.user.username %}">
         @<strong>{{ post.user.username }}</strong>
       </a>
@@ -18,12 +18,12 @@
     </time>
   </h5>
   <h5 class="list-group-item container-fluid">{{ post.message_html|safe }}</h5>
+
   <div class="media-body">
-
-
     <div class="media-footer">
-      {% if user.is_authenticated and post.user == user and not hide %}
+      {% if user.is_authenticated and and post.user == user not hide %}
         <a class="btn btn-danger" href="{% url 'posts:delete' pk=post.pk %}" title="delete">Delete</a>
+        <a class="btn btn-secondary" href="{% url 'posts:edit' pk=post.pk %}" title="edit">Edit Post</a>
       {% endif %}
     </div>
   </div>
