@@ -1,6 +1,6 @@
 <div class="list-group-item">
   <h5 class="media-heading">
-    <span class='username title list-group-item'>
+    <span class='username title list-group-item-heading'>
       <a href="{% url 'posts:for_user' username=post.user.username %}">
         @<strong>{{ post.user.username }}</strong>
       </a>
@@ -17,45 +17,33 @@
       </p>
     </time>
   </h5>
-  <h5 class="list-group-item container-fluid">{{ post.message_html|safe }}</h5>
-
+  <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}" id='not_underline'>
+    <h5 class="list-group-item container-fluid">{{ post.message_html|safe|truncatewords:70 }}
+    {% if post.message_html|length != post.message_html|truncatewords:70|length|add:1 %}
+      <strong>See more ...</strong>
+    {% endif %}
+    </h5>
+  </a>
   <div class="media-body">
-    <div class="media-footer">
+
+
+    <div class="media-footer col-md-12">
       {% if user.is_authenticated and not hide %}
         {% if post.user == user %}
           <a class="btn btn-danger" href="{% url 'posts:delete' pk=post.pk %}" title="delete">Delete</a>
           <a class="btn btn-secondary" href="{% url 'posts:edit' pk=post.pk %}" title="edit">Edit Post</a>
         {% endif %}
-        <a class="btn btn-primary" href="{% url 'posts:create_comment' pk=post.pk %}">Add Comment</a>
+        {% comment %} <a class="btn btn-primary float-right" href="{% url 'posts:create_comment' pk=post.pk %}">Add Comment</a> {% endcomment %}
+        <div class="float-right">
+          <h4>
+            {% if post.comments.count == 0 %}
+              No comments yet
+            {% else %}
+            {{ post.comments.count }} Comment{{ post.comments.count|pluralize }}
+            {% endif %}
+          </h4>
+        </div>
       {% endif %}
     </div>
-  </div>
-</div>
-
-<div class="list-group-item">
-  <div class="comment">
-    {% if post.comments.count == 0 %}
-      <h3>No comments yet</h3>
-    {% else %}
-    <h4>Comments</h4>
-    {% for comment in post.comments.all %}
-      <div class="comment-header list-group-item">
-        <a href="{% url 'posts:for_user' username=comment.author.username %}">
-          <p>@<strong>{{ comment.author }}</strong></p>
-        </a>
-        <div class="comment-date">
-          <i>{{ comment.created_at }}</i>
-        </div>
-        <div class="comment-text">
-          <p> <strong> <i>{{ comment.text }}</i> </strong> </p>
-        </div>
-        {% if user.is_authenticated and comment.author == user %}
-          <div class="delete">
-            <a class="btn btn-danger" href="{% url 'posts:delete_comment' pk=comment.pk %}" title="delete">Delete</a>
-          </div>
-        {% endif %}
-      </div>
-    {% endfor %}
-    {% endif %}
   </div>
 </div>
