@@ -43,7 +43,8 @@ class Comment(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse('posts:all')
+        return reverse('posts:single', kwargs={'username': self.post.user.username,
+                                                'pk': self.post.pk})
 
     def __str__(self):
         return self.text
