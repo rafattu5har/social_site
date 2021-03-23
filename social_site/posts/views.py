@@ -48,19 +48,19 @@ class PostDetail(SelectRelatedMixin, generic.DetailView):
 
 def post_detail(request, username, pk):
     post = get_object_or_404(models.Post, pk=pk)
-    comments = post.comments.all #filter(user__username__iexact=self.kwargs.get('username'))
     new_comment = None
 
     if request.method == 'POST':
         if request.user.id == None:
             raise Http404
-        comment_form = forms.CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.post = post
-            new_comment.author = request.user
-            new_comment.save()
-            return redirect('posts:single', pk=post.pk, username=post.user.username)
+        else:
+            comment_form = forms.CommentForm(data=request.POST)
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                new_comment.post = post
+                new_comment.author = request.user
+                new_comment.save()
+                return redirect('posts:single', pk=post.pk, username=post.user.username)
     else:
         comment_form = forms.CommentForm()
     return render(request, 'posts/post_detail.html', {'post': post, 'form':comment_form})
