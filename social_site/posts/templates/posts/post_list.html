@@ -42,47 +42,7 @@
 
   <div class="col-md-8 row">
     {% for post in post_list %}
-    <div class="list-group-item">
-      <h5 class="media-heading">
-        <span class='username title list-group-item-heading'>
-          <a href="{% url 'posts:for_user' username=post.user.username %}">
-            @<strong>{{ post.user.username }}</strong>
-          </a>
-        </span>
-
-        <time class="time">
-          <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}">
-            {{ post.created_at }}
-          </a>
-          <p>Posted At:
-            <a href="{% url 'groups:single' slug=post.group.slug %}">
-              {{ post.group }}
-            </a>
-          </p>
-        </time>
-      </h5>
-      <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}" id='not_underline'>
-        <h5 class="list-group-item container-fluid">{{ post.message_html|safe|truncatewords:70 }}
-        {% if post.message_html|length != post.message_html|truncatewords:70|length|add:1 %}
-          <strong>See more ...</strong>
-        {% endif %}
-        </h5>
-      </a>
-      <div class="media-body">
-
-
-        <div class="media-footer col-md-12">
-          {% if user.is_authenticated and not hide %}
-            {% if post.user == user %}
-              <a class="btn btn-danger" href="{% url 'posts:delete' pk=post.pk %}" title="delete">Delete</a>
-              <a class="btn btn-secondary" href="{% url 'posts:edit' pk=post.pk %}" title="edit">Edit Post</a>
-            {% endif %}
-            <a class="btn btn-primary float-right" href="{% url 'posts:create_comment' pk=post.pk %}">Add Comment</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-
+      {% include "posts/_post.html" %}
     {% endfor %}
   </div>
 
