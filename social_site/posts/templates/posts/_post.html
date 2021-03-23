@@ -49,6 +49,11 @@
         <div class="comment-text">
           <p> <strong> <i>{{ comment.text }}</i> </strong> </p>
         </div>
+        {% if user.is_authenticated and comment.author == user %}
+          <div class="delete">
+            <a class="btn btn-danger" href="{% url 'posts:delete_comment' pk=comment.pk %}" title="delete">Delete</a>
+          </div>
+        {% endif %}
       </div>
     {% endfor %}
     {% endif %}
