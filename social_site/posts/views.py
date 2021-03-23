@@ -101,4 +101,15 @@ class CreateComment(LoginRequiredMixin, generic.CreateView):
         self.object.save()
         return super().form_valid(form)
 
+
+class DeleteComment(LoginRequiredMixin, generic.DeleteView):
+    model = models.Comment
+
+    def get_success_url(self):
+        post = self.object.post
+        return reverse_lazy('posts:single', kwargs={'username': post.user.username, 'pk':post.pk})
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(author=self.request.user)
 # END
