@@ -10,14 +10,27 @@ from braces.views import SelectRelatedMixin
 
 from . import models
 from . import forms
+from groups.models import Group
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
 # Create your views here.
-class PostList(SelectRelatedMixin, generic.ListView):
+class PostList(LoginRequiredMixin, SelectRelatedMixin, generic.ListView):
     model = models.Post
     select_related = ('user', 'group')
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(group__members=self.request.user)
+
+
+        # try:
+        #     self.posts_to_show = Group.objects.prefetch_related('posts').get(members=self.request.user)
+        # except User.DoesNotExist:
+        #     raise Http404
+        # else:
+        #     return self.posts_to_show.posts.all()
 
 
 class UserPost(generic.ListView):
